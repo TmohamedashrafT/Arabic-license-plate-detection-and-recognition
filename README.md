@@ -8,3 +8,5 @@ The system consists of three phases to recognize the license plate:
   2- The second phase segments the characters and crops them from the plate.
   
   3- The third phase classifies the cropped letters and numbers.
+  
+![Alt text](https://github.com/TmohamedashrafT/Arabic-license-plate-detection-and-recognition/blob/main/images/img1.png)
