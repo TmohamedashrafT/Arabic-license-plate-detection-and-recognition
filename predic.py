@@ -6,8 +6,8 @@ import tensorflow as tf
 from keras import layers
 import numpy as np
 
-plate_detection_model = torch.hub.load('yolov5', 'custom', path='D:/GradProject/plate detection weights/best.pt', source='local') 
-Segment_model = torch.hub.load('yolov5', 'custom', path='D:/GradProject/sympol_segmentation weights/best.pt', source='local')
+plate_detection_model = torch.hub.load('yolov5', 'custom', path='plate detection weights/best.pt', source='local') 
+Segment_model = torch.hub.load('yolov5', 'custom', path='sympol_segmentation weights/best.pt', source='local')
 input_shape=(32, 32, 3)
 ### numbers_model
 MobileNetV2_numbers=MobileNetV2(include_top=False,input_shape=input_shape)
@@ -20,7 +20,7 @@ x_number = layers.Dense(1024, activation='relu')(x_number)
 x_number = layers.Dropout(0.3)(x_number)
 outputs = layers.Dense(9, activation='softmax')(x_number)
 numbers_model = tf.keras.Model(inputs, outputs)
-numbers_model.load_weights("D:/GradProject/numbers weights/mobile_numbers.h5")
+numbers_model.load_weights("numbers weights/mobile_numbers.h5")
 
 ####  letters models
 MobileNetV2_letter= MobileNetV2(include_top=False,input_shape=input_shape)
@@ -33,14 +33,14 @@ x_letters         = layers.Dense(1024, activation='relu')(x_letters)
 x_letters         = layers.Dropout(0.3)(x_letters)
 outputs_letters   = layers.Dense(17, activation='softmax')(x_letters)
 letters_model     = tf.keras.Model(inputs_letter, outputs_letters)
-letters_model.load_weights("D:/GradProject/letter weights/model_letters_mobile.h5")
+letters_model.load_weights("letter weights/model_letters_mobile.h5")
 letters={0:'A',1:'B',2:'G',3:'D',4:'R',5:'S',6:'C',7:'T',8:'E',9:'F',10:'K',11:'L',12:'M',13:'N',14:'H',15:'W',16:'Y'}
+
 def plate_number(img):
     result=plate_detection_model(img)
     x   = result.xyxy
     result.crop()
     img_path = str(result.path)
-    print(img_path)
     try:
         img_res = cv2.imread(img_path)
         #img_res = cv2.cvtColor(img_res, cv2.COLOR_BGR2RGB)
